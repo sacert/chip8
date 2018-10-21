@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct {
   unsigned short opcode;
   unsigned char memory[4096];
 
   unsigned char registers[16];
-
   unsigned short index_register;
+
   unsigned short pc;
 
   unsigned char graphics[64 * 32]; // could use 2d array
@@ -54,6 +55,9 @@ void initialize_cpu() {
 
   // load font's into memory 0x050-0x0A0
   memcpy(&cpu.memory[0x050], &chip8_fontset[0x000], sizeof(chip8_fontset));
+
+  // should I do this here? 
+  srand(time(NULL));
 }
 
 void load_rom(char * file)
@@ -102,23 +106,27 @@ void cpu_cycle() {
       register[(cpu.opcode & 0x0F00) >> 8] = (cpu.opcode & 0x00FF);
       cpu.pc += 2;
       break;
-    case 0x7000: // ADD
+    case 0x7000: // ADD Vx, byte ||  what about overflows? maybe look out for this one
+      register[(cpu.opcode 0x0F00) >> 8] += (cpu.opcode 0x00FF);
+      cpu.pc += 2; 
+      break;
+    case 0x8000: // lots -- will get to
       printf ("Opcode not implemented | %u", cpu.opcode);
       break;
-    case 0x8000: // lots
+    case 0x9000: // SNE Vx, Vy
+      (register[(cpu.opcode & 0x0F00) >> 8] != register[(cpu.opcode & 0x00F0) >> 4]) ? cpu.pc += 4 : cpu.pc += 2;
       printf ("Opcode not implemented | %u", cpu.opcode);
       break;
-    case 0x9000:
-      printf ("Opcode not implemented | %u", cpu.opcode);
+    case 0xA000: // LD I, addr
+      cpu.index_register = (cpu.opcode 0x0FFF);
+      cpu.pc += 2;
       break;
-    case 0xA000:
-      printf ("Opcode not implemented | %u", cpu.opcode);
-      break;
-    case 0xB000:
-      printf ("Opcode not implemented | %u", cpu.opcode);
+    case 0xB000: // JP V0, addr
+      cpu.pc = register[0] + (cpu.opcode & 0x0FFF);
       break;
     case 0xC000:
-      printf ("Opcode not implemented | %u", cpu.opcode);
+      register[(cpu.opcode & 0x0F00) >> 8] = ((rand() % 256) & (cpu.opcode & 0x00FF));
+      cpu.pc += 2;
       break;
     case 0xD000:
       printf ("Opcode not implemented | %u", cpu.opcode);
