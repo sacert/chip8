@@ -71,11 +71,60 @@ void load_rom(char * file)
 }
 
 void cpu_cycle() {
+
+  // opcodes are 2 bytes
   cpu.opcode = cpu.memory[cpu.pc << 8] | cpu.memory[cpu.pc + 1];
   
   switch (cpu.opcode & 0xF000) {
-  
+
+    case 0x0000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break; 
+    case 0x1000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x2000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x3000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x4000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x5000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x6000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x7000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x8000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0x9000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
     case 0xA000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0xB000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0xC000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0xD000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0xE000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
+    case 0xF000:
+      printf ("Opcode not implemented | %u", cpu.opcode);
+      break;
     default:
       printf ("Unknown opcode -- yikes| %u", cpu.opcode);
   }
